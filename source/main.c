@@ -21,7 +21,7 @@
 // reset - sets PORTC to 0x07, then unconditionally goes back to interphase state.
 enum add_states { init, interphase,resetCheck, inc, incWait, dec, decWait, reset } addsm;
 
-void add_states(){
+void add_states_tick(){
 	//transitions
 	switch(addsm) {
 		case init:
@@ -47,7 +47,7 @@ void add_states(){
 		case resetCheck :
 			if (PINA == 0x00){
 				addsm = reset;
-			} else if (PINA == 0x11) {
+			} else if (PINA == 0x03) {
 			 	addsm = resetCheck;
 			} else {
 				addsm = interphase;
@@ -119,7 +119,7 @@ int main(void) {
 	addsm  = init;
     /* Insert your solution below */
     while (1) {
-	add_states();
+	add_states_tick();
     }
     return 1;
 }
