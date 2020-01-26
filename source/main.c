@@ -60,7 +60,7 @@ void tick(){
 			 if ((~PINA & 0x03) == 0x03) {
 			 	addsm = resetCheck;
 			} else {
-				PORTC = 0x07;
+				PORTC = 0x00;
 				addsm = reset;
 			}
 		case inc:
@@ -70,10 +70,10 @@ void tick(){
 			//wait for button release 
 			if ((~PINA & 0x03) == 0x01){
 				addsm = incWait;
-			}else if ((~PINA & 0x03) == 0x03){
-				addsm = resetCheck;
-			}else{
+			}else if ((~PINA & 0x03) == 0x00){
 				addsm = interphase;
+			}else{
+				addsm = resetCheck;
 			}
 			break;
 		case dec:
@@ -83,10 +83,10 @@ void tick(){
 			// wait for button release
                         if ((~PINA & 0x03) == 0x02){
                                 addsm = decWait;
-			} else if ((~PINA & 0x03) == 0x03){
-                                addsm = resetCheck;
-                        }else{
+			} else if ((~PINA & 0x03) == 0x00){
                                 addsm = interphase;
+                        }else{
+                                addsm = resetCheck;
                         }
 
 			break;
@@ -121,7 +121,7 @@ void tick(){
 		case resetCheck:
 			break;
                 case reset:
-			PORTC = 0x07;
+			PORTC = 0x00;
                         break;
                 default:
                         break;
