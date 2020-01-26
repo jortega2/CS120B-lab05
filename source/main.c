@@ -21,8 +21,20 @@
 // reset - sets PORTC to 0x07, then unconditionally goes back to interphase state.
 enum add_states { init, interphase,resetCheck, inc, incWait, dec, decWait, reset } addsm;
 
-void add_states_tick(){
-	//transitions
+void tick();
+
+int main(void) {
+    /* Insert DDR and PORT initializations */
+	DDRA = 0x00; PORTA = 0xFF;
+	DDRC = 0xFF; PORTC = 0x00;
+	addsm  = init;
+    /* Insert your solution below */
+    while (1) {
+	tick();
+    }
+}
+
+void tick(){
 	switch(addsm) {
 		case init:
 			PORTC = 0x07;
@@ -30,24 +42,24 @@ void add_states_tick(){
 			break;
 		case interphase:
 			//PA0 & !PA1 go to inc
-			if (PINA == 0x01){
+			if (~PINA == 0x01){
 				addsm = inc;
 			}
 			//PA1 & !PA0 go to dec
-			else if (PINA == 0x02){
+			else if (~PINA == 0x02){
 				addsm = dec;
 			}
 			//!PA0 and !PA1 go to reset
-			else if (PINA == 0x03){
+			else if (~PINA == 0x03){
 				addsm = resetCheck;
 			} else {// stay in interphase for anyrthing else
 				addsm = interphase;
 			}
 			break;
 		case resetCheck :
-			if (PINA == 0x00){
+			if (~PINA == 0x00){
 				addsm = reset;
-			} else if (PINA == 0x03) {
+			} else if (~PINA == 0x03) {
 			 	addsm = resetCheck;
 			} else {
 				addsm = interphase;
@@ -57,7 +69,7 @@ void add_states_tick(){
 			break;
 		case incWait:
 			//wait for button release 
-			if (PINA == 0x01){
+			if (~PINA == 0x01){
 				addsm = incWait;
 			}else{
 				addsm = interphase;
@@ -68,7 +80,7 @@ void add_states_tick(){
 			break;
 		case decWait:
 			// wait for button release
-                        if (PINA == 0x02){
+                        if (~PINA == 0x02){
                                 addsm = decWait;
                         }else{
                                 addsm = interphase;
@@ -110,16 +122,4 @@ void add_states_tick(){
                 default:
                         break;
         }//state actins
-}
-int main(void) {
-    /* Insert DDR and PORT initializations */
-	DDRA = 0x00; PORTA = 0xFF;
-	DDRC = 0xFF; PORTC = 0x00;
-	PORTC = 0x07;
-	addsm  = init;
-    /* Insert your solution below */
-    while (1) {
-	
-    }
-    return 1;
 }
