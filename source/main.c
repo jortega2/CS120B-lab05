@@ -50,7 +50,7 @@ void tick(){
 				addsm = dec;
 			}
 			//!PA0 and !PA1 go to reset
-			else if ((~PINA & 0x03) == 0x03){
+			else if ((~PINA & 0x03) == 0x04){
 				addsm = resetCheck;
 			} else {// stay in interphase for anyrthing else
 				addsm = interphase;
