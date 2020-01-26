@@ -119,7 +119,7 @@ int main(void) {
 	addsm  = init;
     /* Insert your solution below */
     while (1) {
-	add_states_tick();
+	
     }
     return 1;
 }
