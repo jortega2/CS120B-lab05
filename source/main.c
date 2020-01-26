@@ -56,10 +56,8 @@ void tick(){
 				addsm = interphase;
 			}
 			break;
-		case resetCheck :
-			if ((~PINA & 0x03) == 0x00){
-				addsm = reset;
-			} else if ((~PINA & 0x03) == 0x03) {
+		case resetCheck ::
+			 if ((~PINA & 0x03) == 0x03) {
 			 	addsm = resetCheck;
 			} else {
 				addsm = interphase;
