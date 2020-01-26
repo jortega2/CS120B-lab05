@@ -19,7 +19,7 @@
 // dec - sets PORTC = PORTC - 1 if PORTC is greater than 0. Leads to decWait state
 // incWait/decWait - wait for user to release PA0 or PA1, then goes back to interphase. This is to prevent unwanted behavior
 // reset - sets PORTC to 0x07, then unconditionally goes back to interphase state.
-enum add_states { init, interphase,resetCheck, inc, incWait, dec, decWait, reset } addsm;
+enum add_states { init, interphase, /*resetCheck*/, inc, incWait, dec, decWait, reset } addsm;
 
 void tick();
 
@@ -50,19 +50,19 @@ void tick(){
 				addsm = dec;
 			}
 			//!PA0 and !PA1 go to reset
-			else if ((~PINA & 0x03) == 0x03){
-				addsm = resetCheck;
+			else if ((~PINA & 0x07) == 0x04){
+				addsm = reset;
 			} else {// stay in interphase for anyrthing else
 				addsm = interphase;
 			}
 			break;
-		case resetCheck :
+		/*case resetCheck :
 			 if ((~PINA & 0x03) == 0x03) {
 			 	addsm = resetCheck;
 			} else {
 				PORTC = 0x00;
 				addsm = reset;
-			}
+			}*/
 		case inc:
 			addsm = incWait;
 			break;
@@ -72,9 +72,9 @@ void tick(){
 				addsm = incWait;
 			}else if ((~PINA & 0x03) == 0x00){
 				addsm = interphase;
-			}else{
+			}/*else{
 				addsm = resetCheck;
-			}
+			}*/
 			break;
 		case dec:
 			addsm = decWait;
@@ -85,12 +85,13 @@ void tick(){
                                 addsm = decWait;
 			} else if ((~PINA & 0x03) == 0x00){
                                 addsm = interphase;
-                        }else{
+                        }/*else{
                                 addsm = resetCheck;
-                        }
+                        }*/
 
 			break;
 		case reset:
+			PORTC = 0x00;
 			addsm = interphase;
 			break;
 		default:
@@ -118,8 +119,8 @@ void tick(){
                         break;
 		case decWait:
 			break;
-		case resetCheck:
-			break;
+		//case resetCheck:
+			//break;
                 case reset:
 			PORTC = 0x00;
                         break;
