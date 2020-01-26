@@ -42,24 +42,24 @@ void tick(){
 			break;
 		case interphase:
 			//PA0 & !PA1 go to inc
-			if (~PINA == 0x01){
+			if ((~PINA & 0x03) == 0x01){
 				addsm = inc;
 			}
 			//PA1 & !PA0 go to dec
-			else if (~PINA == 0x02){
+			else if ((~PINA & 0x03) == 0x02){
 				addsm = dec;
 			}
 			//!PA0 and !PA1 go to reset
-			else if (~PINA == 0x03){
+			else if ((~PINA & 0x03) == 0x03){
 				addsm = resetCheck;
 			} else {// stay in interphase for anyrthing else
 				addsm = interphase;
 			}
 			break;
 		case resetCheck :
-			if (~PINA == 0x00){
+			if ((~PINA & 0x03) == 0x00){
 				addsm = reset;
-			} else if (~PINA == 0x03) {
+			} else if ((~PINA & 0x03) == 0x03) {
 			 	addsm = resetCheck;
 			} else {
 				addsm = interphase;
@@ -69,7 +69,7 @@ void tick(){
 			break;
 		case incWait:
 			//wait for button release 
-			if (~PINA == 0x01){
+			if ((~PINA & 0x03) == 0x01){
 				addsm = incWait;
 			}else{
 				addsm = interphase;
@@ -80,7 +80,7 @@ void tick(){
 			break;
 		case decWait:
 			// wait for button release
-                        if (~PINA == 0x02){
+                        if ((~PINA & 0x03) == 0x02){
                                 addsm = decWait;
                         }else{
                                 addsm = interphase;
