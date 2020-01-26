@@ -60,6 +60,7 @@ void tick(){
 			 if ((~PINA & 0x03) == 0x03) {
 			 	addsm = resetCheck;
 			} else {
+				PORTC = 0x07;
 				addsm = reset;
 			}
 		case inc:
