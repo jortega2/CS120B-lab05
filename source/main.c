@@ -50,13 +50,13 @@ void tick(){
 				addsm = dec;
 			}
 			//!PA0 and !PA1 go to reset
-			else if ((~PINA & 0x07) == 0x04){
+			else if ((~PINA & 0x03) == 0x03){
 				addsm = resetCheck;
 			} else {// stay in interphase for anyrthing else
 				addsm = interphase;
 			}
 			break;
-		case resetCheck ::
+		case resetCheck :
 			 if ((~PINA & 0x03) == 0x03) {
 			 	addsm = resetCheck;
 			} else {
@@ -69,6 +69,8 @@ void tick(){
 			//wait for button release 
 			if ((~PINA & 0x03) == 0x01){
 				addsm = incWait;
+			}else if ((~PINA & 0x03) == 0x03){
+				addsm = resetCheck;
 			}else{
 				addsm = interphase;
 			}
@@ -80,9 +82,12 @@ void tick(){
 			// wait for button release
                         if ((~PINA & 0x03) == 0x02){
                                 addsm = decWait;
+			} else if ((~PINA & 0x03) == 0x03){
+                                addsm = resetCheck;
                         }else{
                                 addsm = interphase;
                         }
+
 			break;
 		case reset:
 			addsm = interphase;
