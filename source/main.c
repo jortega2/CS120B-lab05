@@ -60,7 +60,7 @@ void tick(){
 			 if ((~PINA & 0x03) == 0x03) {
 			 	addsm = resetCheck;
 			} else {
-				addsm = interphase;
+				addsm = reset;
 			}
 		case inc:
 			addsm = incWait;
