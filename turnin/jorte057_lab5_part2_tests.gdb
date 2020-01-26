@@ -28,70 +28,69 @@ echo Running all tests..."\n\n
 #test sequeence from init: A0 & !A1, !A0 & !A1,  A0 & !A1,!A0 and !A1, A0 & !A1,!A0 AND !A1, !A0 & A1, => PORTC: 8
 test "Add, Add, Add, subtract\nPINA: 0x01, 0x11, 0x01,0x11, 0x01, 0x11, 0x10, 0x11, => PC = 0x08  state:interphase"
 set addsm = init 
-setPINA 0x01
 continue 2
-setPINA 0x11
+setPINA ~0x01
 continue 2
-setPINA 0x01
+setPINA ~0x00
 continue 2
-setPINA 0x11
+setPINA ~0x01
 continue 2
-setPINA 0x01
+setPINA ~0x00
 continue 2
-setPINA 0x11
+setPINA ~0x01
 continue 2
-setPINA 0x02
+setPINA ~0x00
 continue 2
-setPINA 0x11
+setPINA ~0x02
+continue 2
+setPINA ~0x00
 continue 2
 expectPORTC 0x08
 expect addsm interphase
 checkResult
 
-#test sequeence from init: !A0 & A1, !A0 & A1, !A0 & A1, !A0 & A1,... !A0 & A1 => PORTC: 0
-test "Reset, subtract, subtract, subtract, subtract, subtract\nPINA: 0x00, 0x02, 0x11, 0x02, 0x11, 0x02, 0x11, 0x02, 0x11 => PC = 0x08  state:interphase"
+#test sequeence from init: A0 & !A1, !A0 & !A1,  A0 & !A1,!A0 and !A1, A0 & !A1,!A0 AND !A1, !A0 & A1, => PORTC: 8
+test "Reset Sub Sub, Sub, Sub \nPINA: 0x02, 0x00, 0x02,0x00, 0x02, 0x00, 0x02, 0x00, => PC = 0x03  state:interphase"
 set addsm = init
-continue 5
-setPINA 0x00
 continue 2
-setPINA 0x02
+setPINA ~0x02
 continue 2
-setPINA 0x11
+setPINA ~0x00
 continue 2
-setPINA 0x02
+setPINA ~0x02
 continue 2
-setPINA 0x11
+setPINA ~0x00
 continue 2
-setPINA 0x02
+setPINA ~0x02
 continue 2
-setPINA 0x11
+setPINA ~0x00
 continue 2
-setPINA 0x02
+setPINA ~0x02
 continue 2
-setPINA 0x11
+setPINA ~0x00
 continue 2
 expectPORTC 0x03
 expect addsm interphase
 checkResult
 
-#test sequeence from init: A0 & !A1, A0 & !A1, A0 & !A1, !A0 & A1, => PORTC: 8
-test "Reset, subtract, subtract, reset, subtract\n PINA: 0x00, 0x02, 0x11, 0x02, 0x11, 0x00, 0x02, 0x11 => PC = 0x06  state:interphae"
+#test sequeence from init: A0 & !A1, !A0 & !A1,  A0 & !A1,!A0 and !A1, A0 & !A1,!A0 AND !A1, !A0 & A1, => PORTC: 8
+test "Add, ADd, Reset \nPINA: 0x02, 0x00, 0x02,0x00, 0x11, 0x00, 0x01, 0x00, => PC = 0x08  state:interphase"
 set addsm = init
-setPINA 0x00
 continue 2
-setPINA 0x02
+setPINA ~0x01
 continue 2
-setPINA 0x11
+setPINA ~0x00
 continue 2
-setPINA 0x02
+setPINA ~0x01
 continue 2
-setPINA 0x00
+setPINA ~0x00
 continue 2
-setPINA 0x02
-continue 2
-setPINA 0x11
-continue 2
-expectPORTC 0x06
+setPINA ~0x03
+continue 1
+setPINA ~0x00
+continue 1
+
+expectPORTC 0x00
 expect addsm interphase
 checkResult
 
